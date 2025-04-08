@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra kiến thức RSA Ecom</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        .hidden { display: none; }
+        .question { margin-bottom: 20px; }
+        .result-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .result-table th, .result-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Trang đăng nhập -->
+        <div id="login-page">
+            <h2>Đăng nhập để làm bài kiểm tra</h2>
+            <label>Họ tên:</label><br>
+            <input type="text" id="name" required><br><br>
+            <label>Mã nhân viên:</label><br>
+            <input type="text" id="employee-id" required><br><br>
+            <label>Mật khẩu:</label><br>
+            <input type="password" id="password" required><br><br>
+            <button onclick="checkPassword()">Bắt đầu</button>
+        </div>
+
+        <!-- Trang bài kiểm tra -->
+        <div id="quiz-page" class="hidden">
+            <h2>Bài kiểm tra kiến thức RSA Ecom</h2>
+            <form id="quiz-form">
+                <!-- Câu hỏi sẽ được thêm bằng JavaScript -->
+            </form>
+            <button onclick="submitQuiz()">Nộp bài</button>
+        </div>
+
+        <!-- Trang quản trị viên -->
+        <div id="admin-page" class="hidden">
+            <h2>Kết quả nhân viên</h2>
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>Họ tên</th>
+                        <th>Mã NV</th>
+                        <th>Điểm</th>
+                        <th>Xếp loại</th>
+                    </tr>
+                </thead>
+                <tbody id="result-body"></tbody>
+            </table>
+            <button onclick="exportToExcel()">Xuất Excel</button>
+        </div>
+    </div>
+
+    <script>
+        const correctPassword = "Test2025"; // Mật khẩu do bạn đặt
+        let results = [];
+
+        const questions = [
+            { question: "Link truy cập hệ thống RSA Ecom là gì?", options: ["https://ci-rsa-ecom.frt.vn/", "https://longchauecom.frt.vn/", "https://return-home.frt.vn/", "https://rsa-shop.frt.vn/"], answer: 1 },
+            { question: "Khi đăng nhập RSA Ecom, bước đầu tiên là gì?", options: ["Nhập mật khẩu", "Lựa chọn hệ thống “Long Châu”", "Nhấn “Đăng nhập”", "Nhập mã OTP"], answer: 1 },
+            // Thêm 18 câu hỏi khác từ bộ 1 hoặc bộ 2 đã tạo
+            // Ví dụ: { question: "Khi tạo đơn hàng mới, nếu khách hàng là khách mới, hành động nào cần thực hiện?", options: ["Nhấn “Tìm Shop”", "Nhấn “Tạo khách hàng mới”", "Nhấn “Tiếp tục”", "Nhấn “Hủy đơn”"], answer: 1 },
+        ];
+
+        function checkPassword() {
+            const password = document.getElementById("password").value;
+            const name = document.getElementById("name").value;
+            const employeeId = document.getElementById("employee-id").value;
+            if (password === correctPassword && name && employeeId) {
+                document.getElementById("login-page").classList.add("hidden");
+                document.getElementById("quiz-page").classList.remove("hidden");
+                loadQuestions();
+            } else {
+                alert("Mật khẩu hoặc thông tin không đúng!");
+            }
+        }
+
+        function loadQuestions() {
+            const form = document.getElementById("quiz-form");
+            questions.forEach((q, index) => {
+                const div = document.createElement("div");
+                div.classList.add("question");
+                div.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+                q.options.forEach((option, i) => {
+                    div.innerHTML += `<input type="radio" name="q${index}" value="${i}"> ${option}<br>`;
+                });
+                form.appendChild(div);
+            });
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected && parseInt(selected.value) === q.answer) score += 0.5;
+            });
+            const name = document.getElementById("name").value;
+            const employeeId = document.getElementById("employee-id").value;
+            const rank = score <= 4.5 ? "Yếu" : score <= 6.5 ? "Trung bình" : score <= 8.5 ? "Khá" : "Giỏi";
+            results.push({ name, employeeId, score, rank });
+
+            document.getElementById("quiz-page").classList.add("hidden");
+            document.getElementById("admin-page").classList.remove("hidden");
+            displayResults();
+        }
+
+        function displayResults() {
+            const tbody = document.getElementById("result-body");
+            tbody.innerHTML = "";
+            results.forEach(r => {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td>${r.name}</td><td>${r.employeeId}</td><td>${r.score}/10</td><td>${r.rank}</td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        function exportToExcel() {
+            const data = results.map(r => [r.name, r.employeeId, r.score, r.rank]);
+            const csv = "Họ tên,Mã NV,Điểm,Xếp loại\n" + data.map(row => row.join(",")).join("\n");
+            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "ket_qua_kiem_tra.csv";
+            link.click();
+        }
+    </script>
+</body>
+</html>
