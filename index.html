@@ -5,14 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kiểm tra kiến thức RSA Ecom</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .container { max-width: 800px; margin: auto; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #e0f7fa, #b2ebf2);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #00796b;
+            text-align: center;
+            margin-bottom: 20px;
+        }
         .hidden { display: none; }
-        .question { margin-bottom: 20px; }
-        .result-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .result-table th, .result-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
-        button:hover { background-color: #45a049; }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #004d40;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #b0bec5;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+        .question p {
+            margin: 0 0 10px;
+            color: #37474f;
+            font-weight: bold;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .result-table th, .result-table td {
+            border: 1px solid #b0bec5;
+            padding: 12px;
+            text-align: left;
+        }
+        .result-table th {
+            background: #00796b;
+            color: white;
+        }
+        button {
+            background: #00796b;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #004d40;
+        }
     </style>
 </head>
 <body>
@@ -20,12 +89,18 @@
         <!-- Trang đăng nhập -->
         <div id="login-page">
             <h2>Đăng nhập để làm bài kiểm tra</h2>
-            <label>Họ tên:</label><br>
-            <input type="text" id="name" required><br><br>
-            <label>Mã nhân viên:</label><br>
-            <input type="text" id="employee-id" required><br><br>
-            <label>Mật khẩu:</label><br>
-            <input type="password" id="password" required><br><br>
+            <div class="form-group">
+                <label>Họ tên:</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label>Mã nhân viên:</label>
+                <input type="text" id="employee-id" required>
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu:</label>
+                <input type="password" id="password" required>
+            </div>
             <button onclick="checkPassword()">Bắt đầu</button>
         </div>
 
@@ -57,14 +132,30 @@
     </div>
 
     <script>
-        const correctPassword = "Test2025"; // Mật khẩu do bạn đặt
+        const correctPassword = "RSA2025"; // Mật khẩu mới
         let results = [];
 
         const questions = [
             { question: "Link truy cập hệ thống RSA Ecom là gì?", options: ["https://ci-rsa-ecom.frt.vn/", "https://longchauecom.frt.vn/", "https://return-home.frt.vn/", "https://rsa-shop.frt.vn/"], answer: 1 },
             { question: "Khi đăng nhập RSA Ecom, bước đầu tiên là gì?", options: ["Nhập mật khẩu", "Lựa chọn hệ thống “Long Châu”", "Nhấn “Đăng nhập”", "Nhập mã OTP"], answer: 1 },
-            // Thêm 18 câu hỏi khác từ bộ 1 hoặc bộ 2 đã tạo
-            // Ví dụ: { question: "Khi tạo đơn hàng mới, nếu khách hàng là khách mới, hành động nào cần thực hiện?", options: ["Nhấn “Tìm Shop”", "Nhấn “Tạo khách hàng mới”", "Nhấn “Tiếp tục”", "Nhấn “Hủy đơn”"], answer: 1 },
+            { question: "Khi tạo đơn hàng mới, nếu khách hàng là khách mới, hành động nào cần thực hiện?", options: ["Nhấn “Tìm Shop”", "Nhấn “Tạo khách hàng mới”", "Nhấn “Tiếp tục”", "Nhấn “Hủy đơn”"], answer: 1 },
+            { question: "Hệ thống RSA Ecom tự động cập nhật thông tin gì khi nhập SĐT của khách hàng đã mua hàng?", options: ["Điểm thưởng FS và giỏ hàng", "Tên, địa chỉ, điểm thưởng FS", "Tên và số điện thoại", "Địa chỉ và mã giảm giá"], answer: 1 },
+            { question: "Khi khách hàng có sản phẩm trong giỏ hàng từ app/website Long Châu, Sale làm gì để thêm sản phẩm đó vào đơn?", options: ["Nhấn “Tìm kiếm sản phẩm”", "Nhấn “+” để chọn bán sản phẩm quan tâm", "Nhấn “Thêm địa chỉ mới”", "Nhấn “Đổi điểm F-sell”"], answer: 1 },
+            { question: "Khi tìm kiếm sản phẩm trên RSA Ecom, danh sách gợi ý hiển thị tối đa bao nhiêu sản phẩm?", options: ["10", "15", "20", "25"], answer: 2 },
+            { question: "Nếu khách hàng đổi điểm F-sell nhưng hủy đơn trước khi tạo mã ID đơn hàng, điều gì xảy ra?", options: ["Điểm F-sell được hoàn lại", "Voucher/Quà đồng bộ về app khách hàng", "Đơn hàng tự động đẩy về shop", "Sale phải nhập lại thông tin"], answer: 1 },
+            { question: "Khi chọn phương thức “Nhận tại Shop”, hệ thống gợi ý tối đa bao nhiêu shop gần khách hàng nhất?", options: ["1", "2", "3", "4"], answer: 2 },
+            { question: "Nếu Sale thay đổi thông tin đơn hàng sau khi tìm shop, bước tiếp theo cần làm là gì?", options: ["Nhấn “Tiếp tục”", "Tìm shop lại", "Nhấn “Đẩy đơn”", "Nhấn “Hủy đơn”"], answer: 1 },
+            { question: "Với đơn hàng thanh toán COD, bước cuối cùng để đẩy đơn về RSA Shop là gì?", options: ["Nhấn “Gửi SMS”", "Nhấn “Đẩy đơn”", "Nhấn “Tìm Shop”", "Nhấn “Đồng bộ”"], answer: 1 },
+            { question: "Thời gian hiệu lực của link thanh toán VNPAY gửi qua SMS là bao lâu?", options: ["10 phút", "15 phút", "20 phút", "30 phút"], answer: 1 },
+            { question: "Với đơn thanh toán qua Alepay, sau khi khách thanh toán thành công, hệ thống làm gì?", options: ["Hiển thị nút “Đẩy đơn”", "Tự động đẩy đơn về RSA Shop", "Yêu cầu Sale nhập mã OTP", "Gửi thêm SMS xác nhận"], answer: 1 },
+            { question: "Khi khách hàng chuyển khoản thiếu tiền, hệ thống sẽ làm gì?", options: ["Tự động hủy đơn", "Gợi ý số tiền còn thiếu và điền vào phần COD", "Yêu cầu Sale nhập lý do", "Chuyển toàn bộ sang thanh toán COD"], answer: 1 },
+            { question: "Sale muốn nhận thêm đơn hàng khi chưa xử lý xong đơn hiện tại, cần làm gì?", options: ["Nhấn “Tiếp tục”", "Nhấn “Nhận thêm đơn hàng”", "Nhấn “Đẩy đơn”", "Nhấn “Hủy đơn”"], answer: 1 },
+            { question: "Trong “Lịch sử đơn hàng”, trạng thái “Hoàn tất cọc” nghĩa là gì?", options: ["Đơn hàng đã giao thành công", "Đơn hàng thanh toán online hoặc chuyển khoản thành công và đã đẩy shop", "Đơn hàng bị hủy", "Đơn hàng đang xử lý"], answer: 1 },
+            { question: "Ai có quyền hủy đơn hàng COD đã đẩy shop ở trạng thái “Đang xử lý”?", options: ["Chỉ Sale tạo đơn", "Sale tạo đơn, Leader và Manager", "Chỉ Manager", "Chỉ khách hàng"], answer: 1 },
+            { question: "Khi cắt liều cho trẻ em, bước bắt buộc đầu tiên là gì?", options: ["Chọn danh sách bệnh", "Chọn cân nặng", "Nhấn “Thêm vào giỏ hàng”", "Chọn đối tượng “Trẻ em”"], answer: 1 },
+            { question: "Với đơn hàng bán nợ, nếu tổng tiền vượt hạn mức công nợ, hệ thống sẽ làm gì?", options: ["Tự động điều chỉnh số tiền", "Hiện thông báo và chặn tạo đơn", "Cho phép tạo đơn nhưng không đẩy shop", "Yêu cầu Manager phê duyệt"], answer: 1 },
+            { question: "Trong chính sách trả hàng, thời gian đổi trả tối đa cho thiết bị y tế máy là bao lâu?", options: ["30 ngày", "90 ngày", "1 năm", "6 tháng"], answer: 2 },
+            { question: "Với đơn hàng có voucher khuyến mãi từ Long Châu, khi trả hàng, điều gì xảy ra?", options: ["Voucher được hoàn lại", "Không được hoàn lại voucher", "Điểm F-sell được hoàn lại", "Yêu cầu Manager xử lý"], answer: 1 }
         ];
 
         function checkPassword() {
